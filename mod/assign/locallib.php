@@ -8010,6 +8010,9 @@ class assign {
 
         if ($submission->userid != 0) {
             \mod_assign\event\submission_status_updated::create_from_submission($this, $submission)->trigger();
+            // Added for MDL-66203 The submission status stays "Submitted for grading" after a submission is removed by or for the student
+            $submission->status = ASSIGN_SUBMISSION_STATUS_NEW ;
+            $this->update_submission($submission, $userid, false, $this->get_instance()->teamsubmission);         
         }
         return true;
     }
